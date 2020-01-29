@@ -1,0 +1,197 @@
+---
+title: "DATA605 Exercise3"
+author: "Misha Kollontai"
+date: "1/28/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercise EE.C27
+For matrix 
+
+$$\mathbf{A} = \left[\begin{array}
+{rrrr}
+0 & 4 & -1 & 1 \\
+-2 & 6 & -1 & 1 \\
+-2 & 8 & -1 & -1 \\
+-2 & 8 & -3 & 1
+\end{array}\right]$$
+
+the characteristic polynomial of **A** is $$p_{A}(x)=(x+2)(x-2)^{2}(x-4)$$Find the eigenvalues and corresponding eigenspaces of **A**.
+
+Based on the characteristic polynomial, we can deduce that the eigenvalues are: $\lambda_{1}=-2$, $\lambda_{2}=2$ and $\lambda_{3}=4$.
+
+Calculating the corresponding eigenvectors is as follows:
+
+(1) $\lambda_{1} = -2$
+
+$$(A-\lambda_{2} I)\nu=0$$
+$$\mathbf{(A - \lambda_{1} I)} = \left[\begin{array}
+{rrrr}
+2 & 4 & -1 & 1 \\
+-2 & 8 & -1 & 1 \\
+-2 & 8 & 1 & -1 \\
+-2 & 8 & -3 & 3
+\end{array}\right]$$
+
+Applying row operations:
+
+$$\mathbf{(A - \lambda_{1} I)} = \left[\begin{array}
+{rrrr}
+2 & 4 & -1 & 1 \\
+0 & 12 & -2 & 2 \\
+0 & 12 & 0 & 0 \\
+0 & 12 & -4 & 4
+\end{array}\right]$$
+
+$$\mathbf{(A - \lambda_{1} I)} = \left[\begin{array}
+{rrrr}
+1 & 2 & -1/2 & 1/2 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & -2 & 2 \\
+0 & 0 & -4 & 4
+\end{array}\right]$$
+
+$$\mathbf{(A - \lambda_{1} I)} = \left[\begin{array}
+{rrrr}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & -1 \\
+0 & 0 & 1 & -1
+\end{array}\right]$$
+
+Setting that equal to 0 leads to:
+
+$$\nu_{1} = 0$$
+$$\nu_{2} = 0$$
+$$\nu_{3} = \nu_{4}$$
+
+**So, assuming a $\nu_{3}=1$**
+$$\varepsilon_{A}(-2) = [0,0,1,1]$$
+
+(2) $\lambda_{2} = 2$
+
+$$(A-\lambda_{2} I)\nu=0$$
+$$\mathbf{(A - \lambda_{2} I)} = \left[\begin{array}
+{rrrr}
+-2 & 4 & -1 & 1 \\
+-2 & 4 & -1 & 1 \\
+-2 & 8 & -3 & -1 \\
+-2 & 8 & -3 & -1
+\end{array}\right]$$
+
+Applying row operations:
+
+$$\mathbf{(A - \lambda_{2} I)} = \left[\begin{array}
+{rrrr}
+1 & -2 & 1/2 & -1/2 \\
+0 & 4 & -2 & -2 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0
+\end{array}\right]$$
+
+$$\mathbf{(A - \lambda_{2} I)} = \left[\begin{array}
+{rrrr}
+1 & -2 & 1/2 & -1/2 \\
+0 & 1 & -1/2 & -1/2 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0
+\end{array}\right]$$
+
+$$\mathbf{(A - \lambda_{2} I)} = \left[\begin{array}
+{rrrr}
+1 & 0 & -1/2 & -3/2 \\
+0 & 1 & -1/2 & -1/2 \\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0
+\end{array}\right]$$
+
+Setting that equal to 0 leads to:
+
+$$\nu_{1}-0.5\nu_{3}-1.5\nu_{4} = 0$$
+$$\nu_{2}-0.5\nu_{3}-0.5\nu_{4} = 0$$
+$$\nu_{3}=2\nu{1}-3\nu_{4}$$
+$$\nu_{4}=2\nu_{2}-\nu_{3}$$
+Substituting into each other:
+
+$$\nu_{3}=3\nu_{2}-\nu_{1}$$
+
+And
+
+$$\nu_{4} = \nu_{1} - \nu_{2}$$
+
+With these constraints, assuming two random pair values for $\nu{1}$ and $\nu_{2}$:
+
+$$\varepsilon_{A}(2) = [0,1,2,-1],[3,1,-1,2]$$
+(3) $\lambda_{3} = 4$
+
+$$(A-\lambda_{3} I)\nu=0$$
+$$\mathbf{(A - \lambda_{3} I)} = \left[\begin{array}
+{rrrr}
+-4 & 4 & -1 & 1 \\
+-2 & 2 & -1 & 1 \\
+-2 & 8 & -5 & -1 \\
+-2 & 8 & -3 & -3
+\end{array}\right]$$
+
+Applying row operations:
+
+$$\mathbf{(A - \lambda_{3} I)} = \left[\begin{array}
+{rrrr}
+2 & -2 & 1/2 & -1/2 \\
+1 & -1 & 1/2 & -1/2 \\
+1 & -4 & 5/2 & 1/2 \\
+1 & -4 & 3/2 & 3/2
+\end{array}\right]$$
+
+$$\mathbf{(A - \lambda_{3} I)} = \left[\begin{array}
+{rrrr}
+1 & 0 & 1 & -1 \\
+0 & -1 & 1/2 & -1/2 \\
+0 & -3 & 2 & 1 \\
+0 & -3 & 1 & 2
+\end{array}\right]$$
+
+$$\mathbf{(A - \lambda_{3} I)} = \left[\begin{array}
+{rrrr}
+1 & -1 & 1/2 & -1/2 \\
+0 & 1 & -2/3 & -1/3 \\
+0 & 0 & -1 & 1 \\
+0 & 0 & 1 & -1
+\end{array}\right]$$
+
+$$\mathbf{(A - \lambda_{3} I)} = \left[\begin{array}
+{rrrr}
+1 & -1 & 1/2 & -1/2 \\
+0 & 1 & -2/3 & -1/3 \\
+0 & 0 & 1 & -1 \\
+0 & 0 & 0 & 0
+\end{array}\right]$$
+
+$$\mathbf{(A - \lambda_{3} I)} = \left[\begin{array}
+{rrrr}
+1 & -1 & 0 & 0 \\
+0 & 1 & 0 & -1 \\
+0 & 0 & 1 & -1 \\
+0 & 0 & 0 & 0
+\end{array}\right]$$
+
+Setting that equal to 0 leads to:
+
+$$\nu_{1}=\nu_{2}$$
+$$\nu_{2}=\nu_{4}$$
+$$\nu_{3}=\nu_{4}$$
+Meaning:
+$$\nu_{1}=\nu_{2}=\nu_{3}=\nu_{4}$$
+
+**So,**
+$$\varepsilon_{A}(4) = [1,1,1,1]$$
+
+#### In conclusion:
+
+$$\varepsilon_{A}(-2) = [0,0,1,1]$$
+$$\varepsilon_{A}(2) = [0,1,2,-1],[3,1,-1,2]$$
+$$\varepsilon_{A}(4) = [1,1,1,1]$$
