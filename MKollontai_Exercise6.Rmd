@@ -1,0 +1,28 @@
+---
+title: "DATA605 Exercise6"
+author: "Misha Kollontai"
+date: "3/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercise 31 on page 154 of Introduction to Probability
+
+Using the Life Table for 1981 given in Appendix C, find the probability that a male of age 60 in 1981 lives to age 80. Find the same probability for a female. 
+
+```{r}
+M_at_80 <- 36848
+M_at_60 <- 81485
+F_at_80 <- 57062
+F_at_60 <- 89835
+
+P_male <- M_at_80/M_at_60
+P_female <- F_at_80/F_at_60
+```
+
+#### Given that a male made it to 60 years old in 1981, the probability of him making it to age 80 was **`r round(P_male,3)`**.
+
+#### The same probability for a female in the same time period was **`r round(P_female,3)`**.

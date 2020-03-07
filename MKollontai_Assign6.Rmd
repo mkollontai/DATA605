@@ -1,0 +1,252 @@
+---
+title: "DATA605 HW6"
+author: "Misha Kollontai"
+date: "3/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+options(scipen=20)
+options(digits = 4)
+```
+
+
+####  (1) A box contains 54 red marbles, 9 white marbles, and 75 blue marbles. If a marble is randomly selected from the box, what is the probability that it is red or blue? Express your answer as a fraction or a decimal number rounded to four decimal places.
+
+```{r Prob1}
+red <- 54
+white <- 9
+blue <- 75
+total <- red + white + blue
+rORb <- red + blue
+Prob_redORblue <- (rORb) / total
+```
+
+The probability of randomly selecting a red or blue marble is **`r round(Prob_redORblue,4)`**
+
+---
+
+####  (2) You are going to play mini golf. A ball machine that contains 19 green golf balls, 20 red golf balls, 24 blue golf balls, and 17 yellow golf balls, randomly gives you your ball. What is the probability that you end up with a red golf ball? Express your answer as a simplified fraction or a decimal rounded to four decimal places.
+
+```{r Prob2}
+green <- 19
+red <- 20
+blue <- 24
+yellow <- 17
+total <- green + red + blue + yellow
+
+pRED <- red / total
+```
+
+The probability of getting a red ball is **`r round(pRED,4)`**
+
+---
+
+####  (3) A pizza delivery company classifies its customers by gender and location of residence. The research department has gathered data from a random sample of 1399 customers. The data is summarized in the table below:
+
+```{r, echo = FALSE}
+data3 <- matrix(c(81,228,116,79,215,252,130,97,129,72), nrow = 5, byrow = TRUE)
+colnames(data3) <- c('Males','Females')
+rownames(data3) <- c('Apartment','Dorm','With Parent(s)','Sorority/Fraternity House','Other')
+data3 <- as.table(data3)
+data3
+```
+####  What is the probability that a customer is not male or does not live with parents? Write your answer as a fraction or a decimal number rounded to four decimal places.
+
+The probability of a customer being not male or not living with their parents is the equivalent of the probability of a customer not being a male who lives with their parent, so:
+
+```{r Prob3}
+total <- sum(data3)
+males_WithPar <- 215
+P3 <- 1- (males_WithPar/total)
+```
+
+The probability of a customer being not male or not living with their parents is **`r round(P3,4)`**
+
+---
+
+####  (4) Generally **dependent**, though in reality not as effective for some as it is for others.
+
+---
+
+####  (5) A veggie wrap at City Subs is composed of 3 different vegetables and 3 different condiments wrapped up in a tortilla. If there are 8 vegetables, 7 condiments, and 3 types of tortilla available, how many different veggie wraps can be made?
+
+
+```{r Prob5}
+Veg <- choose(8,3)
+Cdm <- choose(7,3)
+Tor <- 3
+Wraps <- Veg * Cdm * Tor
+```
+
+The number of different possible veggie wraps is **`r Wraps`**
+
+---
+
+####  (6) **Independent**.
+
+---
+
+####  (7) The newly elected president needs to decide the remaining 8 spots available in the cabinet he/she is appointing. If there are 14 eligible candidates for these positions (where rank matters), how many different ways can the members of the cabinet be appointed?
+
+```{r Prob7}
+cabinet <- 1
+for (i in seq(from =14, by = -1, length.out = 8)){
+  cabinet <- cabinet * i
+}
+```
+
+The number of possible cabinets is **`r cabinet`**
+
+---
+
+####  (8) A bag contains 9 red, 4 orange, and 9 green jellybeans. What is the probability of reaching into the bag and randomly withdrawing 4 jellybeans such that the number of red ones is 0, the number of orange ones is 1, and the number of green ones is 3? Write your answer as a fraction or a decimal number rounded to four decimal places.
+
+```{r Prob8}
+red <- 9
+orange <- 4
+green <- 9
+total <- red + orange + green
+
+all <- choose(total,4)
+noReds <- choose(red,0)
+orange_1 <- choose(orange,1)
+green_3 <- choose(green,3)
+
+Prob8 <- (noReds*orange_1*green_3)/all
+```
+
+The probability of pulling no red, 1 orange and 3 green jellybeans is **`r round(Prob8,4)`**
+
+---
+
+####  (9) Evaluate the following expression.
+
+$$\frac{11!}{7!}$$
+
+```{r Prob9}
+Prob9 <- factorial(11)/factorial(7)
+```
+
+#### ##The answer is **`r round(Prob9,4)`**
+
+---
+
+####  (10) Describe the complement of the given event.
+
+#### 67% of subscribers to a fitness magazine are over the age of 34.
+
+**33% of subscribers to a fitness magazine are either 34 years  of age or under**.
+
+---
+
+####  (11) If you throw exactly three heads in four tosses of a coin you win $97. If not, you pay me $30.
+
+####  **Step 1.** Find the expected value of the proposition. Round your answer to two decimal places.
+
+```{r Prob11_1}
+n11 <- 4
+Winning11 <- 97
+Loser11 <- 30
+total11 <- 2**n11
+Win11 <- choose(n11,3)/total11
+Lose11 <- 1 - Win11
+
+Value11 <- Win11 * Winning11 - Lose11 * Loser11
+```
+
+The value of this proposition is **`r round(Value11,2)`**.
+
+####  **Step 2.** If you played this game 559 times how much would you expect to win or lose? (Losses must be entered as negative.)
+
+```{r Prob11_2}
+games11 <- 559
+Result11 <- games11 * Value11
+```
+
+If I played this `r games11` times I would expect to win **`r Result11`**.
+
+---
+
+####  (12) Flip a coin 9 times. If you get 4 tails or less, I will pay you $23. Otherwise you pay me $26.
+
+####  **Step 1.** Find the expected value of the proposition. Round your answer to two decimal places.
+
+```{r Prob12_1}
+n12 <- 9
+Winning12 <- 23
+Loser12 <- 26
+
+total12 <- 2**n12
+Win12 <- (choose(n12,4) + choose(n12,3) + choose(n12,2) + choose(n12,1) + choose(n12,0))/total12
+Lose12 <- 1 - Win12
+
+value12 <- Win12 * Winning12 - Lose12 * Loser12
+```
+
+The value of this proposition is **`r round(value12,2)`**.
+
+####  **Step 2.** If you played this game 994 times how much would you expect to win or lose? (Losses must be entered as negative.)
+
+```{r Prob12_2}
+games12 <- 994
+Result12 <- games12 * value12
+```
+
+If I played this `r games12` times I would expect to win **`r Result12`**.
+
+---
+
+####  (13)  The sensitivity and specificity of the polygraph has been a subject of study and debate for years. A 2001 study of the use of polygraph for screening purposes suggested that the probability of detecting a liar was .59 (sensitivity) and that the probability of detecting a "truth teller" was .90 (specificity). We estimate that about 20% of individuals selected for the screening polygraph will lie.
+
+```{r Prob13}
+Lyers <- 0.2
+Truths <- 0.8
+Sensitivity <- 0.59
+Specificity <- 0.9
+
+#The naming convention of the following variables will be as follows:
+#Prob_X_Y, where X is a letter signifying if the person is actually lying, and Y signifies the reading of the polygraph
+
+Prob_L_L <- Lyers * Sensitivity
+Prob_L_T <- 0.2 - Prob_L_L
+Prob_T_T <- Truths * Specificity
+Prob_T_L <- 0.8 - Prob_T_T
+```
+
+####  (a) What is the probability that an individual is actually a liar given that the polygraph detected him/her as such? (Show me the table or the formulaic solution or both.)
+
+```{r Prob13_a}
+#All cases where polygraph detected the interviewee as a liar are all cases where Y = L
+ActualLiar <- Prob_L_L/(Prob_L_L + Prob_T_L)
+```
+
+The probability that an individual is a liar given that the polygraph detected them as one is **`r round(ActualLiar,4)`**.
+
+####  (b) What is the probability that an individual is actually a truth-teller given that the polygraph detected him/her as such? (Show me the table or the formulaic solution or both.)
+
+```{r Prob13_b}
+#All cases where polygraph detected the interviewee as a truth-teller are all cases where Y = T
+ActualTruth <- Prob_T_T/(Prob_L_T + Prob_T_T)
+```
+
+The probability that an individual is a truth-teller given that the polygraph detected them as one is **`r round(ActualTruth,4)`**.
+
+####  (c) What is the probability that a randomly selected individual is either a liar or was identified as a liar by the polygraph? Be sure to write the probability statement.
+
+```{r Prob13_c}
+#This probability includes all probabilities where either X = L (the interviewee was a liar) or Y = L (the polygraph deemed the interviewee a liar) 
+Prob13_c <- Prob_L_L + Prob_L_T + Prob_T_L
+#Alternatively:
+Prob13_c_2 <- Lyers + Prob_T_L
+#Also, the only people who wouldn't qualify for this criteria are the truth-tellers who were identified as such, so:
+Prob13_c_3 <- 1 - Prob_T_T
+
+Prob13_c
+Prob13_c_2
+Prob13_c_3
+```
+
+The probability that arandomly chosen individual is either a liar or was identified as a liar by the polygraph is **`r round(Prob13_c,4)`**.

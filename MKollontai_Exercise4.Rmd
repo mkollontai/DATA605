@@ -1,0 +1,66 @@
+---
+title: "DATA605 Exercise4"
+author: "Misha Kollontai"
+date: "2/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercise ILT.C29
+
+Let 
+
+$$\mathbf{A} = \left[\begin{array}
+{rrrr}
+1 & 2 & 1 & 1 \\
+2 & 1 & 1 & 0 \\
+1 & 2 & 1 & 2 \\
+1 & 2 & 1 & 1
+\end{array}\right]$$
+
+and let $T:C^{4} \to C^{4}$ be given by $T(x) = Ax$. Find $\kappa(T)$. Is T injective?
+
+Let us RREF the matrix:
+
+$$\mathbf{A} = \left[\begin{array}
+{rrrr}
+1 & 2 & 1 & 1 \\
+0 & -3 & -1 & -2 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0
+\end{array}\right]$$
+
+$$\mathbf{A} = \left[\begin{array}
+{rrrr}
+1 & 2 & 1 & 1 \\
+0 & 1 & 1/3 & 2/3 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0
+\end{array}\right]$$
+
+$$\mathbf{A} = \left[\begin{array}
+{rrrr}
+1 & 0 & 1/3 & 0 \\
+0 & 1 & 1/3 & 0 \\
+0 & 0 & 0 & 1 \\
+0 & 0 & 0 & 0
+\end{array}\right]$$
+
+Solving this set of equations yields:
+
+$$x_{1} = -\frac{1}{3}x_{3}$$
+
+$$x_{2} = -\frac{1}{3}x_{3}$$
+$$x_{4} = 0$$
+
+Therefore, $$\kappa(T) = \langle \begin{bmatrix}-1\\
+-1\\
+3\\
+0
+\end{bmatrix}
+\rangle$$
+
+The kernel in our case is non-trivial, so this transformation **cannot be injective**.

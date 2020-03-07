@@ -1,0 +1,188 @@
+---
+title: "DATA605 HW1"
+author: "Misha Kollontai"
+date: "1/27/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Problem set 1
+
+You can think of vectors representing many dimensions of related information. For
+instance, Netflix might store all the ratings a user gives to movies in a vector. This is
+clearly a vector of very large dimensions (in the millions) and very sparse as the user might
+have rated only a few movies. Similarly, Amazon might store the items purchased by a user
+in a vector, with each slot or dimension representing a unique product and the value of the
+slot, the number of such items the user bought. One task that is frequently done in these
+settings is to find similarities between users. And, we can use dot-product between vectors
+to do just that. As you know, the dot-product is proportional to the length of two vectors
+and to the angle between them. In fact, the dot-product between two vectors, normalized
+by their lengths is called as the cosine distance and is frequently used in recommendation
+engines.
+
+#### (1) Calculate the dot product $u.v$ where $u=[0.5;0.5]$ and $v=[3;-4]$
+
+```{r Prob 1_1}
+u <- c(0.5,0.5)
+v <- c(3,-4)
+z <- u %*% v
+z
+```
+
+The dot product $u.v$ is `r z`.
+
+---
+
+#### (2) What are the lengths of $u$ and $v$? Please note that the mathematical notion of the length of a vector is not the same as a computer science definition.
+
+```{r prob 1_2}
+length_u <- sqrt(0.5^2 + 0.5^2)
+length_v <- sqrt(3^2 + (-4)^2)
+```
+
+The length of $u =$ `r length_u` and the length of $v=$ `r length_v`.
+
+---
+
+#### (3) What is the linear combination: $3u − 2v$?
+
+```{r Prob 1_3}
+Prob1_3 <- 3*u - 2*v
+```
+
+The linear combination $3u - 2v$ is [`r Prob1_3`]
+
+---
+
+#### (4) What is the angle between $u$ and $v$?
+
+```{r Prob 1_4}
+require(matlib)
+cos_a <- z / (length_u*length_v)
+alpha <- angle(u,v,FALSE)
+alpha_2 <- acos(cos_a)
+if (alpha == alpha_2){
+  print("Both calculations yielded same result")
+}
+deg_alpha <- alpha * 180 / pi
+```
+
+The angle $\alpha$ between $u$ and $v$ is equal to `r alpha` rad or `r deg_alpha` deg.
+
+---
+
+## 2. Problem set 2
+
+Set up a system of equations with 3 variables and 3 constraints and solve for x. Please write a function in R that will take two variables (matrix A & constraint vector b) and solve using elimination. Your function should produce the right answer for the system of equations for any 3-variable, 3-equation system. You don’t have to worry about degenerate cases and can safely assume that the function will only be tested with a system of equations that has a solution. Please note that you do have to worry about zero pivots, though. Please note that you should not use the built-in function solve to solve this system or use matrix inverses. The approach that you should employ is to construct an Upper Triangular Matrix and then back-substitute to get the solution. Alternatively, you can augment the matrix A with vector b and jointly apply the Gauss Jordan elimination procedure.
+
+```{r Prob 2}
+require(pracma)
+
+UppTri <- function(x,y){
+  Aug_base <- cbind(x,y)
+  levels <- c(0,0,0)
+  Aug <- Aug_base
+  
+  for(i in c(1:3)){
+    if (Aug[i,1] != 0){levels[i] <- 1}
+    else {if(Aug[i,2] != 0){levels[i] <- 2}
+       else{levels[i] <- 3}
+    }
+  }
+
+## Start by sorting the rows in order of present variables
+   if(levels[1] > levels[2]){
+     if(levels[2] < levels[3]){
+       Aug[1,] <- Aug_base[2,]
+       Aug[2,] <- Aug_base[1,]
+       Aug[3,] <- Aug_base[3,]
+     } else{
+       if(levels[3] <= levels[2]){
+          Aug[1,] <- Aug_base[3,]
+          Aug[2,] <- Aug_base[2,]
+          Aug[3,] <- Aug_base[1,]
+       } else{
+          Aug[1,] <- Aug_base[2,]
+          Aug[2,] <- Aug_base[3,]
+          Aug[3,] <- Aug_base[1,]
+       }
+     }
+   } else{
+     if(levels[3] > levels[1]){
+        Aug[1,] <- Aug_base[1,]
+        Aug[2,] <- Aug_base[3,]
+        Aug[3,] <- Aug_base[2,]
+     } else{
+       if(levels[3] < levels[2]){
+          Aug[1,] <- Aug_base[3,]
+          Aug[2,] <- Aug_base[1,]
+          Aug[3,] <- Aug_base[2,]
+       }
+     }
+   }
+  
+  #Set the first term to 1
+  if(Aug[1,1] != 0){
+    Aug[1,] <- Aug[1,]/Aug[1,1]
+  }
+  
+  #Ensure that the other two rows have zero values in the first column
+  Aug[2,] <- Aug[2,] - Aug[1,]*Aug[2,1]/Aug[1,1]
+  Aug[3,] <- Aug[3,] - Aug[1,]*Aug[3,1]/Aug[1,1]
+  
+  #Set the first value in the second row equal to 1
+  if(Aug[2,2] != 0){
+    Aug[2,] <- Aug[2,]/Aug[2,2]
+    #Zero the value in the third row below the 1 of the second
+    Aug[3,] <- Aug[3,] - Aug[2,]*Aug[3,2]/Aug[2,2]
+    #If possible, do the same to the first row
+    if(Aug[1,2] != 0){
+      Aug[1,] <- Aug[1,] - Aug[2,]*Aug[1,2]/Aug[2,2]
+    }
+  }
+  
+  if(Aug[3,3] != 0){
+    Aug[3,] <- Aug[3,]/Aug[3,3]
+    if(Aug[1,3] != 0){
+      Aug[1,] <- Aug[1,] - Aug[3,]*Aug[1,3]/Aug[3,3]
+    }
+    if(Aug[2,3] != 0){
+      Aug[2,] <- Aug[2,] - Aug[3,]*Aug[2,3]/Aug[3,3]
+    }
+  }
+  fail <- FALSE
+  for(i in c(2,3)){
+    if(Aug[i,1] == 0 & Aug[i,2] == 0 & Aug[i,3] ==0 && Aug[i,4] != 0){
+      fail <- TRUE
+    }
+  }
+  
+  if (fail){
+    print("There is no solution")
+  }else{
+    print("The solution to the system of equations using my function is:")
+    print(Aug[,4])
+  }
+  return(Aug[,4])
+}
+
+## check that the function finds the correct answer
+
+A <- c(1,2,-1,1,-1,-2,3,5,4)
+dim(A) <- c(3,3)
+b <- c(1,2,6)
+
+print(A)
+mySolution <- UppTri(A,b)
+RREF <- rref(cbind(A,b))
+RREF2 <- solve(A,b)
+
+print("The solutions calculated by built-in R functions are:")
+RREF[,4]
+RREF2
+
+print("The solutions match!")
+```

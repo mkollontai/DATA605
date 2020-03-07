@@ -1,0 +1,31 @@
+---
+title: "DATA605 Exercise5"
+author: "Misha Kollontai"
+date: "2/27/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercise 26 on page 39 of Introduction to Probability
+
+Two cards are drawn successively from a deck of 52 cards. Find the probability
+that the second card is higher in rank than the first card. Hint: Show that 1 =
+$P(higher) + P(lower) + P(same)$ and use the fact that $P(higher) = P(lower)$
+
+Clearly, there are 3 possibilities when drawing two cards: either the second card is lower than the first, higher than the first, or equal to it (in rank). Therefore, $P(higher) + P(lower) + P(same)$.
+
+#### Assuming that $P(higher) = P(lower)$ as stated in the problem, let us set the probabilities of those two values as $x$. Therefore
+
+$$1 = 2x + P(same)$$
+
+$P(same)$ is equal to the probability of the same card being drawn, so $\frac{1}{52}$.
+
+$$1 = 2x + \frac{1}{52}$$
+$$2x = 1 - \frac{1}{52}$$
+$$2x = \frac{51}{52}$$
+$$x = \frac{51}{104}$$
+
+$$x = 49.0346%$$

@@ -1,0 +1,112 @@
+---
+title: "DATA605 HW1"
+author: "Misha Kollontai"
+date: "1/27/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Problem set 1
+
+#### (1) Show that $A^{T}A \neq AA^{T}$ in general. (Proof and demonstration.)
+
+Let's look at the example of a 3x3 matrix A
+
+$$\mathbf{A} = \left[\begin{array}
+{rrr}
+n_{11} & n_{12} & n_{13} \\
+n_{21} & n_{22} & n_{23} \\
+n_{31} & n_{32} & n_{33}
+\end{array}\right]
+$$
+This would mean that:
+
+$$\mathbf{A^{T}} = \left[\begin{array}
+{rrr}
+n_{11} & n_{21} & n_{31} \\
+n_{12} & n_{22} & n_{32} \\
+n_{13} & n_{23} & n_{33}
+\end{array}\right]$$
+
+Let's take a look at what the first column will look like for $A^{T}A$:
+
+$$\mathbf{A^{T}A[,1]} = \left[\begin{array}
+{r}
+n_{11} * n_{11} + n_{21} * n_{21} + n_{31} * n_{31} \\
+n_{12} * n_{11} + n_{22} * n_{21} + n_{32} * n_{31} \\
+n_{13} * n_{11} + n_{23} * n_{21} + n_{33} * n_{31}
+\end{array}\right]$$
+
+Let's take a look at what the first column will look like for $AA^{T}$:
+
+$$\mathbf{AA^{T}[,1]} = \left[\begin{array}
+{r}
+n_{11} * n_{11} + n_{12} * n_{12} + n_{13} * n_{13} \\
+n_{21} * n_{11} + n_{22} * n_{12} + n_{23} * n_{13} \\
+n_{31} * n_{11} + n_{32} * n_{12} + n_{33} * n_{13}
+\end{array}\right]$$
+
+#### As we can see from the examples above, generally $A^{T}A \neq AA^{T}$ There are cases where the coefficients may match up, but usually this will not be true. 
+
+To test this, let's look at a random 4x4 matrix A:
+
+```{r test ATA_AAT}
+#Define a 4x4 matrix A using random values
+A <- c(1,2,-5,6,-1,-7,3,5,4,3,9,13,-5,3,-12,7)
+dim(A) <- c(4,4)
+
+#Transpose this matrix and assign to AT
+AT <- t(A)
+
+#Calculate the two multiplied matrices
+ATA <- AT %*% A
+
+AAT <- A %*% AT
+
+ATA == AAT
+```
+
+**As we can see, none of the entries in the two matrices match, confirming our proof.**
+
+---
+
+#### (2) For a special type of square matrix $A$, we get $A^{T}A = AA^{T}$. Under what conditions could this be true? (Hint: The Identity matrix I is an example of such a matrix).
+
+This could be true in the case that $A = A^{T}$. The identity matrix is one such example of a diagonal matrix.
+
+---
+
+## 2. Problem set 2
+
+Matrix factorization is a very important problem. There are supercomputers built just to do matrix factorizations. Every second you are on an airplane, matrices are being factorized. Radars that track flights use a technique called Kalman filtering. At the heart of Kalman Filtering is a Matrix Factorization operation. Kalman Filters are solving linear systems of equations when they track your flight using radars. Write an R function to factorize a square matrix A into LU or LDU, whichever you prefer.
+
+```{r Prob_2}
+
+findLU <- function(x){
+  n <- nrow(x)
+  L <- diag(n)
+  
+  for (i in c(2:n)){
+    for (j in c(1:(i-1))){
+      Elim <- (x[i,j]/x[j,j])
+      L[i,j] <- Elim
+      x[i,] <- x[i,]-Elim*x[j,]
+    }
+  }
+  print("The matrix L =")
+  print(L)
+  return(x)
+}
+
+A <- c(1,2,3,1,1,1,2,0,1)
+dim(A) <- c(3,3)
+print("The matrix A =")
+print(A)
+U <- findLU(A)
+print("The matrix U =")
+U
+
+```

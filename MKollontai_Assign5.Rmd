@@ -1,0 +1,92 @@
+---
+title: "DATA605 HW5"
+author: "Misha Kollontai"
+date: "2/18/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+#### Choose independently two numbers **B** and **C** at random from the interval [0,1] with uniform density. Prove that B and C are proper probability distributions. 
+
+Let's use the function $unif$ to randomly generate the numbers. To prove that this is a proper probability distribution, let's plot a histogram of 10000 such randomly generated numbers:
+
+``` {r}
+hist(runif(100000))
+```
+
+The calculations below are approximations, not analytical calculations. In order to ensure that the results are close to the analytical value, the simulation was run 1,000,000 times. As this number increases, the results of the simulation approach the analytical values. In order to reduce processing time, this value was kept at 1,000,000.
+
+```{r}
+n = 1000000
+results_a <- rep(NA,n)
+results_b <- rep(NA,n)
+results_c <- rep(NA,n)
+results_d <- rep(NA,n)
+results_e <- rep(NA,n)
+
+for (i in 0:n){
+  B <- runif(1)
+  C <- runif(1)
+  results_a[i] <- B + C
+  results_b[i] <- B * C
+  results_c[i] <- abs(B-C)
+  results_d[i] <- max(B,C)
+  results_e[i] <- min(B,C)
+  }
+
+eval <- function(x,n){
+  res <- length(x[x<0.5])/n
+  return(res)
+}
+
+```
+#### Find the probability that:
+
+##### (a) $B + C < \frac{1}{2}$
+
+```{r}
+hist(results_a)
+probA <- eval(results_a,n)
+```
+
+The probability of $B + C < \frac{1}{2}$ is **`r round(probA * 100,2)`%**.\n
+
+##### (b) $BC < \frac{1}{2}$
+
+```{r}
+hist(results_b)
+probB <- eval(results_b,n)
+```
+
+The probability of $BC < \frac{1}{2}$ is **`r round(probB * 100,2)`%**.\n
+
+##### (c) $|B-C| < \frac{1}{2}$
+
+```{r}
+hist(results_c)
+probC <- eval(results_c,n)
+```
+
+The probability of $|B-C| < \frac{1}{2}$ is **`r round(probC * 100,2)`%**.\n
+
+##### (d) $max(B,C) < \frac{1}{2}$
+
+```{r}
+hist(results_d)
+probD <- eval(results_d,n)
+```
+
+The probability of $max(B,C) < \frac{1}{2}$ is **`r round(probD * 100,2)`%**\n
+
+##### (e) $min(B,C) < \frac{1}{2}$
+
+```{r}
+hist(results_e)
+probE <- eval(results_e,n)
+```
+
+The probability of $min(B,C) < \frac{1}{2}$ is **`r round(probE * 100,2)`%**.
